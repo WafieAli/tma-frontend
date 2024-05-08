@@ -1,0 +1,194 @@
+<div class="container">
+    <div class="border">
+        <button class="btn btn-md btn-outline-primary" (click)="open(content)">
+          <i class="fa fa-user"></i>New Task
+        </button>
+    </div>
+    <table class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Last Updated On</th>
+        <th>Completed</th>
+        <th>Action(s)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let task of tasks">
+        <td><span>{{task.TaskID}}</span></td>
+        <td><span>{{task.Title}}</span></td>
+        <td><span>{{task.Description}}</span></td>
+        <td><span>{{task.Status}}</span></td>
+        <td><span>{{(task.UpdatedDate ? task.UpdatedDate : task.CreatedDate) | date: 'medium'}}</span></td>
+        <td><span>{{task.Completed =='t' ? "Yes" : "No"}}</span></td>
+        <td>
+            <button class="btn btn-sm btn-info" (click)="openDetails(contentDetails, task)">
+              <i class="fa fa-search"></i>Details</button>
+            <button class="btn btn-sm btn-warning" (click)="openEdit(contentEdit, task)">
+              <i class="fa fa-edit"></i>Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="openDelete(contentDelete, task)">
+              <i class="fa fa-remove"></i>Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <!-- Insert Task -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">New Task</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <div class="input-group">
+              <input id="title" name="title" class="form-control" ngModel>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <div class="input-group">
+              <input id="description" name="description" class="form-control" ngModel>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <div class="input-group">
+              <input id="status" name="status" class="form-control" ngModel>
+            </div>
+          </div>
+          <hr>
+          <div class="border text-center">
+            <button data-dismiss="modal" class="btn btn-info">Submit</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cancel click')">Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </ng-template>
+
+  <!-- View Task Details -->
+  <ng-template #contentDetails let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">New Task</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+              <label for="title1">Title</label>
+              <div class="input-group">
+                <input id="title1" class="form-control" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="description1">Description</label>
+              <div class="input-group">
+                <input id="description1" class="form-control" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="status1">Status</label>
+                <div class="input-group">
+                  <input id="status1" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="completed1">Completed</label>
+                <div class="input-group">
+                  <input id="completed1" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastUpd">Last Updated On</label>
+                <div class="input-group">
+                  <input id="lastUpd" class="form-control" readonly>
+                </div>
+            </div>
+          </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cancel click')">Cancel</button>
+    </div>
+  </ng-template>
+
+  <!-- Task Edit -->
+  <ng-template #contentEdit let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit Task</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm" novalidate>
+            <div class="form-group"> 
+             <label for="task_id">Id</label> 
+             <div class="input-group"> 
+                <input formControlName="task_id" class="form-control"> 
+             </div> 
+           </div>
+            <div class="form-group">
+              <label for="title">Title</label>
+              <div class="input-group">
+                <input formControlName="title" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <div class="input-group">
+                <input formControlName="description" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <div class="input-group">
+                  <input formControlName="status" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="completed">Completed</label>
+                <div class="input-group">
+                  <input formControlName="completed" class="form-control">
+                </div>
+            </div>
+          </form>
+    </div>
+    <div class="modal-footer">
+        <div class="border text-center">
+            <button data-dismiss="modal" class="btn btn-info" (click)="onSave()">Save Changes</button>
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cancel click')">Cancel</button>
+        </div>
+    </div>
+  </ng-template>
+
+  <!-- Delete Task -->
+  <ng-template #contentDelete let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Confirm Delete</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h2>Are you sure you want to clear this task?</h2>
+      <div class="border text-center"> 
+        <button data-dismiss="modal" class="btn btn-danger" (click)="onDelete()">Yes, Delete!</button> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cancel</button>
+    </div>
+  </ng-template>
